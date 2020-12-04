@@ -1,15 +1,15 @@
-# dblstats.js
+# dblstatistics.js
 
 An official module for interacting with dblstatistics.com API
 
 ## Installation
 
-`npm i dblstats.js`
+`npm i dblstatistics.js`
 
 ## Usage
 
 ```js
-const DBLStats = require('dblstats.js')
+const DBLStats = require('dblstatistics.js')
 
 const dbl = new DBLStats('Your token')
 
