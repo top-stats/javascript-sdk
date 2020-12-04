@@ -1,0 +1,33 @@
+{
+  "name": "dblstats.js",
+  "version": "1.0.0",
+  "description": "Official node module for interacting with the dblstats.com API",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm build"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
+    "@types/node": "^14.14.10",
+    "@types/query-string": "^6.3.0"
+  },
+  "author": "JPBBerry",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbl-marcorennmaus-de/dblstats.js.git"
+  },
+  "keywords": [
+    "dblstats",
+    "top.gg",
+    "dbl"
+  ],
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "bugs": {
+    "url": "https://github.com/dbl-marcorennmaus-de/dblstats.js/issues"
+  },
+  "homepage": "https://github.com/dbl-marcorennmaus-de/dblstats.js#readme"
+}
