@@ -1,10 +1,10 @@
 {
   "name": "dblstatistics.js",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Official node module for interacting with the dblstats.com API",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -r ./dist && tsc",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
@@ -29,5 +29,6 @@
   "bugs": {
     "url": "https://github.com/dbl-marcorennmaus-de/dblstatistics.js/issues"
   },
-  "homepage": "https://github.com/dbl-marcorennmaus-de/dblstatistics.js#readme"
+  "homepage": "https://github.com/dbl-marcorennmaus-de/dblstatistics.js#readme",
+  "types": "dist/src/DblStatsClient.d.ts"
 }

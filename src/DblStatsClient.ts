@@ -1,11 +1,12 @@
 import Package from '../package.json'
 import qs from 'querystring'
 import fetch, { Headers } from 'node-fetch'
+import './typings'
 
 /**
  * dblstats API Client
  */
-export default class DblStatsClient {
+class Client {
   private token: string
   /**
    * Creates a new DBL Stats Client intstance
@@ -94,3 +95,7 @@ export default class DblStatsClient {
     return this._request('GET', '/auctions/tags')
   }
 }
+
+module.exports = Client
+export { Client }
+export default Client

@@ -1,5 +1,5 @@
 {
-  "files": ["./src/index.ts"],
+  "files": ["./src/DblStatsClient.ts"],
   "compilerOptions": {
     "moduleResolution": "node",
     "declaration": true,
