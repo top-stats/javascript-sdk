@@ -11,7 +11,7 @@ An official module for interacting with dblstatistics.com API
 ```js
 const DBLStats = require('dblstatistics.js')
 
-const dbl = new DBLStats.Client('Your token')
+const dbl = new DBLStats('Your token')
 
 // e.g
 await dbl.getBot('id') // bot info

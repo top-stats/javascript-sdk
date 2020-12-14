@@ -1,6 +1,6 @@
 {
   "name": "dblstatistics.js",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Official node module for interacting with the dblstats.com API",
   "main": "./dist/src/DblStatsClient.js",
   "scripts": {
