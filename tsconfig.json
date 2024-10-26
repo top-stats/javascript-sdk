@@ -1,12 +1,17 @@
 {
-  "files": ["./src/DblStatsClient.ts"],
   "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
     "moduleResolution": "node",
-    "declaration": true,
-    "target": "ES2017",
     "outDir": "./dist",
-    "module": "commonjs",
+    "declaration": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
-  }
+    "resolveJsonModule": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "lib": ["ES2020"], 
+    "types": ["node"] 
+  },
+  "include": ["lib/**/*"],
+  "exclude": ["node_modules", "dist", "example"]
 }
