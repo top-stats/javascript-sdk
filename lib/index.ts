@@ -4,240 +4,25 @@
  * @version 1.0.0
  */
 
-/**
- * Response structure for rate limit errors
- */
-export interface RateLimitedResponse {
-  statusCode: number;
-  error: string;
-  message: string;
-  date: string;
-  expiresIn: string;
-}
-
-/**
- * Represents detailed bot data from the API
- */
-export interface BotData {
-  /** @deprecated */
-  certified: boolean;
-  /** Array of bot owner Discord IDs */
-  owners: string[];
-  /** Whether the bot has been deleted */
-  deleted: boolean;
-  /** Bot's Discord ID */
-  id: string;
-  /** Bot's display name */
-  name: string;
-  /** Default avatar URL */
-  def_avatar: string;
-  /** Short description of the bot */
-  short_desc: string;
-  /** @deprecated */
-  lib: string;
-  /** Bot's command prefix */
-  prefix: string;
-  /** Bot's website URL */
-  website: string;
-  /** ISO timestamp of when the bot was approved */
-  approved_at: string;
-  /** Current monthly votes */
-  monthly_votes: number;
-  /** Current server count */
-  server_count: number;
-  /** Total votes received */
-  total_votes: number;
-  /** Current shard count */
-  shard_count: number;
-  /** Current rank by monthly votes */
-  monthly_votes_rank: number;
-  /** Current rank by server count */
-  server_count_rank: number;
-  /** Current rank by total votes */
-  total_votes_rank: number;
-  /** Current rank by shard count */
-  shard_count_rank: number;
-  /** ISO timestamp of last update */
-  timestamp: string;
-  /** Unix timestamp of last update */
-  unix_timestamp: number;
-  /** Percentage changes in metrics */
-  percentageChanges: {
-    /** Daily percentage change */
-    daily: number;
-    /** Monthly percentage change */
-    monthly: number;
-  };
-}
-
-/**
- * Available time frames for historical data queries
- */
-export type HistoricalDataTimeFrame =
-  | "alltime"
-  | "5y"
-  | "3y"
-  | "1y"
-  | "90d"
-  | "30d"
-  | "7d"
-  | "1d"
-  | "12hr"
-  | "6hr";
-
-/**
- * Types of data that can be queried historically
- */
-export type HistoricalDataTypes =
-  | "monthly_votes"
-  | "total_votes"
-  | "server_count"
-  | "shard_count";
-
-/**
- * Historical data point structure with type-safe value field
- */
-export interface BaseHistoricalData {
-  time: string;
-  id: string;
-}
-
-export interface MonthlyVotesHistoricalData extends BaseHistoricalData {
-  type: "monthly_votes";
-  monthly_votes: number;
-}
-
-export interface TotalVotesHistoricalData extends BaseHistoricalData {
-  type: "total_votes";
-  total_votes: number;
-}
-
-export interface ServerCountHistoricalData extends BaseHistoricalData {
-  type: "server_count";
-  server_count: number;
-}
-
-export interface ShardCountHistoricalData extends BaseHistoricalData {
-  type: "shard_count";
-  shard_count: number;
-}
-
-export type HistoricalData =
-  | MonthlyVotesHistoricalData
-  | TotalVotesHistoricalData
-  | ServerCountHistoricalData
-  | ShardCountHistoricalData;
-
-export interface HistoricalDataResponse {
-  data: HistoricalData[];
-}
-
-export interface HistoricalDataRequest {
-  id: string;
-  timeFrame: HistoricalDataTimeFrame;
-  type: HistoricalDataTypes;
-}
-
-export interface HistoricalDataResponse {
-  data: HistoricalData[];
-}
-
-/**
- * Structure for recent bot statistics
- */
-export interface RecentData {
-  time: string;
-  monthly_votes: number;
-  server_count: number;
-  shard_count: number;
-  total_votes: number;
-  monthly_votes_change: number;
-  monthly_votes_change_perc: number;
-  server_count_change: number;
-  shard_count_change: number;
-  total_votes_change: number;
-}
-
-export interface RecentDataRequest {
-  id: string;
-}
-
-export interface RecentDataResponse {
-  hourlyData: RecentData[];
-  dailyData: RecentData[];
-}
-
-/**
- * Branded type for rankings limit (1-500)
- */
-export type RankingsLimit = number & { readonly __brand: unique symbol };
-
-/**
- * Validates if a number is a valid rankings limit
- */
-export function isValidRankingsLimit(value: number): value is RankingsLimit {
-  return Number.isInteger(value) && value >= 1 && value <= 500;
-}
-
-export const DEFAULT_RANKINGS_LIMIT = 100 as RankingsLimit;
-
-export type RankingsSortBy =
-  | "monthly_votes_rank"
-  | "total_votes_rank"
-  | "server_count_rank"
-  | "shard_count_rank";
-
-export type RankingsSortMethod = "asc" | "desc";
-
-export interface RankingsRequest {
-  limit?: RankingsLimit;
-  sortBy: RankingsSortBy;
-  sortMethod: RankingsSortMethod;
-}
-
-export interface RankingsData {
-  id: string;
-  name: string;
-  monthly_votes: number;
-  monthly_votes_rank: number;
-  server_count: number;
-  server_count_rank: number;
-  total_votes: number;
-  total_votes_rank: number;
-  shard_count: number;
-  shard_count_rank: number;
-  monthly_votes_rank_change: number;
-  server_count_rank_change: number;
-  total_votes_rank_change: number;
-  shard_count_rank_change: number;
-}
-
-export interface RankingsResponse {
-  totalBotCount: number;
-  data: RankingsData[];
-}
-
-/**
- * Custom error classes for better error handling
- */
-export class TopStatsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "TopStatsError";
-    Object.setPrototypeOf(this, TopStatsError.prototype);
-  }
-}
-
-export class RateLimitError extends TopStatsError {
-  constructor(
-    message: string,
-    public expiresIn: string,
-  ) {
-    super(message);
-    this.name = "RateLimitError";
-    Object.setPrototypeOf(this, RateLimitError.prototype);
-  }
-}
+import {
+  BotData,
+  HistoricalData,
+  HistoricalTimeFrame,
+  HistoricalDataType,
+  RecentDataResponse,
+} from "./types/discord/bots";
+import {
+  isValidRankingsLimit,
+  DEFAULT_RANKINGS_LIMIT,
+  RankingsRequest,
+  RankingsResponse,
+} from "./types/discord/rankings";
+import { GetUsersBotsResponse } from "./types/discord/users";
+import {
+  RateLimitError,
+  TopStatsError,
+  RateLimitedResponse,
+} from "./types/error";
 
 export interface ClientOptions {
   /** API Token for authentication */
@@ -273,6 +58,10 @@ export class Client {
     } else {
       this.token = options.token;
       this.BASE_URL = options.baseUrl ?? "https://api.topstats.gg";
+    }
+
+    if (!this.token) {
+      throw new TopStatsError("No API token provided");
     }
   }
 
@@ -358,17 +147,26 @@ export class Client {
    * @param timeFrame - Time frame for historical data
    * @param type - Type of data to fetch
    */
-  async getBotHistorical<T extends HistoricalDataTypes>(
+  async getBotHistorical<T extends HistoricalDataType>(
     botId: string,
-    timeFrame: HistoricalDataTimeFrame,
+    timeFrame: HistoricalTimeFrame,
     type: T,
-  ): Promise<{
-    data: Array<Extract<HistoricalData, { type: T }>>;
-  }> {
+  ): Promise<{ data: Array<Extract<HistoricalData, { type: T }>> }> {
     this.validateBotId(botId);
-    return this._request<{
-      data: Array<Extract<HistoricalData, { type: T }>>;
-    }>("GET", `/discord/bots/${botId}/historical`, { timeFrame, type });
+    const response = await this._request<any>(
+      "GET",
+      `/discord/bots/${botId}/historical`,
+      { timeFrame, type },
+    );
+
+    const transformedData = response.data.map((item: any) => ({
+      time: item.time,
+      id: item.id,
+      type: type,
+      value: item[type],
+    }));
+
+    return { data: transformedData };
   }
 
   /**
@@ -402,4 +200,20 @@ export class Client {
       limit,
     });
   }
+
+  /**
+   * Fetches a user's bots
+   * @param id - The Discord user ID
+   */
+  async getUsersBots(id: string): Promise<GetUsersBotsResponse> {
+    return this._request<GetUsersBotsResponse>(
+      "GET",
+      `/discord/users/${id}/bots`,
+    );
+  }
 }
+
+export * from "./types/discord/bots";
+export * from "./types/discord/rankings";
+export * from "./types/discord/users";
+export * from "./types/error";

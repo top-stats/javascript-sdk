@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { Client, HistoricalDataTypes } from "../lib";
+import { Client, HistoricalTimeFrame, HistoricalDataType } from "../lib";
 import "dotenv/config";
 
 const TEST_BOT_ID = "583807014896140293";
@@ -32,16 +32,17 @@ test.describe("TopStats API Client", () => {
   });
 
   test.describe("Historical Data", () => {
-    const dataTypes: HistoricalDataTypes[] = [
-      "monthly_votes",
-      "total_votes",
-      "server_count",
-      "shard_count",
-    ];
+    const dataTypes = Object.values(HistoricalDataType).filter(
+      (value) => typeof value === "string",
+    ) as HistoricalDataType[];
 
     for (const type of dataTypes) {
       test(`should fetch 24h ${type} data`, async () => {
-        const history = await client.getBotHistorical(TEST_BOT_ID, "1d", type);
+        const history = await client.getBotHistorical(
+          TEST_BOT_ID,
+          HistoricalTimeFrame.ONE_DAY,
+          type,
+        );
 
         expect(history.data).toBeInstanceOf(Array);
         expect(history.data.length).toBeGreaterThan(0);
@@ -49,13 +50,18 @@ test.describe("TopStats API Client", () => {
         const dataPoint = history.data[0];
         expect(dataPoint).toHaveProperty("time");
         expect(dataPoint).toHaveProperty("id");
-        expect(dataPoint).toHaveProperty(type);
-        expect(typeof dataPoint[type]).toBe("number");
+        expect(dataPoint).toHaveProperty("type", type);
+        expect(dataPoint).toHaveProperty("value");
+        expect(typeof dataPoint.value).toBe("number");
       });
     }
 
     test("should fetch data for different timeframes", async () => {
-      const timeframes = ["1d", "7d", "30d"] as const;
+      const timeframes = [
+        HistoricalTimeFrame.ONE_DAY,
+        HistoricalTimeFrame.SEVEN_DAYS,
+        HistoricalTimeFrame.THIRTY_DAYS,
+      ];
 
       for (const timeframe of timeframes) {
         for (const type of dataTypes) {
@@ -66,43 +72,10 @@ test.describe("TopStats API Client", () => {
           );
 
           expect(history.data.length).toBeGreaterThan(0);
-          expect(history.data[0]).toHaveProperty(type);
+          expect(history.data[0]).toHaveProperty("type", type);
+          expect(history.data[0]).toHaveProperty("value");
         }
       }
-    });
-
-    test("should have correct type-specific data", async () => {
-      // Monthly votes
-      const monthlyVotes = await client.getBotHistorical(
-        TEST_BOT_ID,
-        "1d",
-        "monthly_votes",
-      );
-      expect(monthlyVotes.data[0]).toHaveProperty("monthly_votes");
-
-      // Total votes
-      const totalVotes = await client.getBotHistorical(
-        TEST_BOT_ID,
-        "1d",
-        "total_votes",
-      );
-      expect(totalVotes.data[0]).toHaveProperty("total_votes");
-
-      // Server count
-      const serverCount = await client.getBotHistorical(
-        TEST_BOT_ID,
-        "1d",
-        "server_count",
-      );
-      expect(serverCount.data[0]).toHaveProperty("server_count");
-
-      // Shard count
-      const shardCount = await client.getBotHistorical(
-        TEST_BOT_ID,
-        "1d",
-        "shard_count",
-      );
-      expect(shardCount.data[0]).toHaveProperty("shard_count");
     });
   });
 

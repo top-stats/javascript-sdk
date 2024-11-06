@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { Client } from "../lib";
+import { Client, HistoricalDataType, HistoricalTimeFrame } from "../lib";
 
 const BOT_ID = "583807014896140293";
 
@@ -16,14 +16,18 @@ async function main() {
   });
 
   // Get historical data (last 24h)
-  const history = await client.getBotHistorical(BOT_ID, "1d", "total_votes");
+  const history = await client.getBotHistorical(
+    BOT_ID,
+    HistoricalTimeFrame.ONE_DAY,
+    HistoricalDataType.MONTHLY_VOTES,
+  );
   console.log("24h History:", history.data.length, "entries");
   console.log("First Entry:", history.data[0]);
 
   const history7d = await client.getBotHistorical(
     BOT_ID,
-    "7d",
-    "monthly_votes",
+    HistoricalTimeFrame.SEVEN_DAYS,
+    HistoricalDataType.MONTHLY_VOTES,
   );
   console.log("7d History:", history7d.data.length, "entries");
   console.log("First Entry:", history7d.data[0]);
@@ -41,6 +45,10 @@ async function main() {
     sortMethod: "desc",
   });
   console.log("Top Bots:", rankings.totalBotCount, "total bots");
+
+  // Get a user's bot list
+  const userBots = (await client.getUsersBots("205680187394752512")).bots; // Xignotic's ID
+  console.log("Xignotic's Bots:", userBots.length, "total bots");
 }
 
 main().catch(console.error);
