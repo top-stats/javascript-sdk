@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * TopStats - Official Node.js client for the topstats.gg API
+ * TopStats - Community maintained Node.js client for the topstats.gg API
  * @version 1.0.0
  */
 
@@ -10,19 +10,24 @@ import {
   HistoricalTimeFrame,
   HistoricalDataType,
   RecentDataResponse,
-} from "./types/discord/bots";
+} from './types/discord/bots';
+
 import {
   isValidRankingsLimit,
   DEFAULT_RANKINGS_LIMIT,
   RankingsRequest,
   RankingsResponse,
-} from "./types/discord/rankings";
-import { GetUsersBotsResponse } from "./types/discord/users";
+} from './types/discord/rankings';
+
+import { GetUsersBotsResponse } from './types/discord/users';
+
 import {
   RateLimitError,
   TopStatsError,
   RateLimitedResponse,
-} from "./types/error";
+} from './types/error';
+
+import { CompareBotsHistoricalRequest } from './types/discord/compare';
 
 export interface ClientOptions {
   /** API Token for authentication */
@@ -52,16 +57,16 @@ export class Client {
    * @param options - Token string or client options object
    */
   constructor(options: string | ClientOptions) {
-    if (typeof options === "string") {
+    if (typeof options === 'string') {
       this.token = options;
-      this.BASE_URL = "https://api.topstats.gg";
+      this.BASE_URL = 'https://api.topstats.gg';
     } else {
       this.token = options.token;
-      this.BASE_URL = options.baseUrl ?? "https://api.topstats.gg";
+      this.BASE_URL = options.baseUrl ?? 'https://api.topstats.gg';
     }
 
     if (!this.token) {
-      throw new TopStatsError("No API token provided");
+      throw new TopStatsError('No API token provided');
     }
   }
 
@@ -71,7 +76,7 @@ export class Client {
    */
   private validateBotId(botId: string): void {
     if (!/^\d{17,19}$/.test(botId)) {
-      throw new TopStatsError("Invalid Discord bot ID format");
+      throw new TopStatsError('Invalid Discord bot ID format');
     }
   }
 
@@ -83,12 +88,12 @@ export class Client {
   private async _request<T>(
     method: string,
     path: string,
-    query?: Record<string, any>,
+    query?: Record<string, unknown>
   ): Promise<T> {
     try {
       const url = new URL(`${this.BASE_URL}${path}`);
 
-      if (query && method === "GET") {
+      if (query && method === 'GET') {
         Object.entries(query).forEach(([key, value]) => {
           if (value !== undefined) {
             url.searchParams.append(key, String(value));
@@ -100,10 +105,10 @@ export class Client {
         method,
         headers: {
           Authorization: this.token,
-          "Content-Type": "application/json",
-          "User-Agent": "TopStats/1.0.0",
+          'Content-Type': 'application/json',
+          'User-Agent': 'TopStats/1.0.0',
         },
-        body: method !== "GET" && query ? JSON.stringify(query) : undefined,
+        body: method !== 'GET' && query ? JSON.stringify(query) : undefined,
       });
 
       const data = await response.json();
@@ -112,13 +117,13 @@ export class Client {
         const rateLimitData = data as RateLimitedResponse;
         throw new RateLimitError(
           rateLimitData.message,
-          rateLimitData.expiresIn,
+          rateLimitData.expiresIn
         );
       }
 
       if (!response.ok) {
         throw new TopStatsError(
-          `API Error ${response.status}: ${response.statusText}`,
+          `API Error ${response.status}: ${response.statusText}`
         );
       }
 
@@ -126,7 +131,7 @@ export class Client {
     } catch (error) {
       if (error instanceof TopStatsError) throw error;
       throw new TopStatsError(
-        error instanceof Error ? error.message : "Unknown error occurred",
+        error instanceof Error ? error.message : 'Unknown error occurred'
       );
     }
   }
@@ -138,7 +143,7 @@ export class Client {
    */
   async getBot(botId: string): Promise<BotData> {
     this.validateBotId(botId);
-    return this._request<BotData>("GET", `/discord/bots/${botId}`);
+    return this._request<BotData>('GET', `/discord/bots/${botId}`);
   }
 
   /**
@@ -150,15 +155,17 @@ export class Client {
   async getBotHistorical<T extends HistoricalDataType>(
     botId: string,
     timeFrame: HistoricalTimeFrame,
-    type: T,
+    type: T
   ): Promise<{ data: Array<Extract<HistoricalData, { type: T }>> }> {
     this.validateBotId(botId);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await this._request<any>(
-      "GET",
+      'GET',
       `/discord/bots/${botId}/historical`,
-      { timeFrame, type },
+      { timeFrame, type }
     );
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const transformedData = response.data.map((item: any) => ({
       time: item.time,
       id: item.id,
@@ -176,8 +183,8 @@ export class Client {
   async getBotRecent(botId: string): Promise<RecentDataResponse> {
     this.validateBotId(botId);
     return this._request<RecentDataResponse>(
-      "GET",
-      `/discord/bots/${botId}/recent`,
+      'GET',
+      `/discord/bots/${botId}/recent`
     );
   }
 
@@ -187,15 +194,15 @@ export class Client {
    * @throws {TopStatsError} If limit is invalid
    */
   async getRankings(
-    options: Omit<RankingsRequest, "limit"> & { limit?: number },
+    options: Omit<RankingsRequest, 'limit'> & { limit?: number }
   ): Promise<RankingsResponse> {
     const limit = options.limit ?? DEFAULT_RANKINGS_LIMIT;
 
     if (!isValidRankingsLimit(limit)) {
-      throw new TopStatsError("Rankings limit must be between 1 and 500");
+      throw new TopStatsError('Rankings limit must be between 1 and 500');
     }
 
-    return this._request<RankingsResponse>("GET", "/discord/rankings/bots", {
+    return this._request<RankingsResponse>('GET', '/discord/rankings/bots', {
       ...options,
       limit,
     });
@@ -207,13 +214,59 @@ export class Client {
    */
   async getUsersBots(id: string): Promise<GetUsersBotsResponse> {
     return this._request<GetUsersBotsResponse>(
-      "GET",
-      `/discord/users/${id}/bots`,
+      'GET',
+      `/discord/users/${id}/bots`
     );
+  }
+
+  /**
+   * Compare multiple Discord bots.
+   *
+   * This method fetches the latest bot stats across multiple bots.
+   *
+   * @param ids - Array of Discord bot IDs
+   * @returns A promise with the comparison data
+   * @throws {TopStatsError} If any provided bot ID is invalid
+   */
+  async compareBots(ids: string[]): Promise<{ data: unknown[] }> {
+    // Validate each ID in the request
+    ids.forEach((id) => this.validateBotId(id));
+
+    // Construct the endpoint by joining the ids with a slash
+    const path = `/discord/compare/${ids.join('/')}`;
+
+    return this._request<{ data: unknown[] }>('GET', path);
+  }
+
+  /**
+   * Compare historical data for multiple Discord bots.
+   *
+   * This method fetches historical data (based on the provided timeframe and data type)
+   * for a set of bots.
+   *
+   * @param request - Object containing an array of bot IDs, a timeFrame, and a historical data type
+   * @returns A promise with the historical compare data
+   * @throws {TopStatsError} If any provided bot ID is invalid
+   */
+  async compareBotsHistorical(
+    request: CompareBotsHistoricalRequest
+  ): Promise<{ data: Record<string, unknown[]> }> {
+    const { ids, timeFrame, type } = request;
+
+    // Validate each ID in the request
+    ids.forEach((id) => this.validateBotId(id));
+
+    // Construct the endpoint by joining the ids with a slash, then use the "historical" endpoint
+    const path = `/discord/compare/historical/${ids.join('/')}`;
+
+    return this._request<{ data: Record<string, unknown[]> }>('GET', path, {
+      timeFrame,
+      type,
+    });
   }
 }
 
-export * from "./types/discord/bots";
-export * from "./types/discord/rankings";
-export * from "./types/discord/users";
-export * from "./types/error";
+export * from './types/discord/bots';
+export * from './types/discord/rankings';
+export * from './types/discord/users';
+export * from './types/error';

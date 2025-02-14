@@ -57,26 +57,28 @@ export interface BotData {
  *	Types of data that can be queried historically
  */
 export enum HistoricalDataType {
-  MONTHLY_VOTES = "monthly_votes",
-  TOTAL_VOTES = "total_votes",
-  SERVER_COUNT = "server_count",
-  SHARD_COUNT = "shard_count",
+  MONTHLY_VOTES = 'monthly_votes',
+  TOTAL_VOTES = 'total_votes',
+  SERVER_COUNT = 'server_count',
+  SHARD_COUNT = 'shard_count',
 }
 
 /**
  *	Available time frames for historical data queries
  */
 export enum HistoricalTimeFrame {
-  ALL_TIME = "alltime",
-  FIVE_YEARS = "5y",
-  THREE_YEARS = "3y",
-  ONE_YEAR = "1y",
-  NINETY_DAYS = "90d",
-  THIRTY_DAYS = "30d",
-  SEVEN_DAYS = "7d",
-  ONE_DAY = "1d",
-  TWELVE_HOURS = "12hr",
-  SIX_HOURS = "6hr",
+  ALL_TIME = 'alltime',
+  FIVE_YEARS = '5y',
+  THREE_YEARS = '3y',
+  ONE_YEAR = '1y',
+  NINE_MONTHS = '270d',
+  SIX_MONTHS = '180d',
+  NINETY_DAYS = '90d',
+  THIRTY_DAYS = '30d',
+  SEVEN_DAYS = '7d',
+  ONE_DAY = '1d',
+  TWELVE_HOURS = '12hr',
+  SIX_HOURS = '6hr',
 }
 
 /**

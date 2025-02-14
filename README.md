@@ -1,6 +1,6 @@
 # TopStats
 
-Official Node.js client for the [topstats.gg](https://topstats.gg) API
+Community maintained Node.js client for the [topstats.gg](https://topstats.gg) API
 
 ## Installation
 
@@ -11,7 +11,7 @@ npm install topstats
 ## Quick Start
 
 ```typescript
-import { Client } from "topstats";
+import { Client, HistoricalDataType, HistoricalTimeFrame } from "topstats";
 
 // Initialize client with your API token
 const client = new Client("YOUR_TOKEN");
@@ -23,8 +23,8 @@ console.log(bot.name, bot.server_count);
 // Get historical data
 const history = await client.getBotHistorical(
   "583807014896140293",
-  "30d",
-  "monthly_votes"
+  HistoricalTimeFrame.THIRTY_DAYS,
+  HistoricalDataType.MONTHLY_VOTES
 );
 console.log(history.data);
 
@@ -38,6 +38,21 @@ const rankings = await client.getRankings({
   sortMethod: "desc",
 });
 console.log(rankings.data);
+
+// Compare multiple bots (latest data)
+const compareResponse = await client.compareBots([
+  "432610292342587392",
+  "646937666251915264",
+]);
+console.log("Compare Bots:", compareResponse.data);
+
+// Compare historical data for multiple bots
+const historicalCompareResponse = await client.compareBotsHistorical({
+  ids: ["432610292342587392", "646937666251915264"],
+  timeFrame: HistoricalTimeFrame.SEVEN_DAYS,
+  type: HistoricalDataType.MONTHLY_VOTES,
+});
+console.log("Historical Compare Data:", historicalCompareResponse.data);
 ```
 
 ## API Reference
@@ -65,28 +80,6 @@ const bot = await client.getBot("583807014896140293");
 Fetches historical data for a specific bot.
 
 ```typescript
-// Available timeframes
-enum HistoricalTimeFrame {
-  ALL_TIME = "alltime",
-  FIVE_YEARS = "5y",
-  THREE_YEARS = "3y",
-  ONE_YEAR = "1y",
-  NINETY_DAYS = "90d",
-  THIRTY_DAYS = "30d",
-  SEVEN_DAYS = "7d",
-  ONE_DAY = "1d",
-  TWELVE_HOURS = "12hr",
-  SIX_HOURS = "6hr",
-}
-
-// Available data types
-enum HistoricalDataType {
-  MONTHLY_VOTES = "monthly_votes",
-  TOTAL_VOTES = "total_votes",
-  SERVER_COUNT = "server_count",
-  SHARD_COUNT = "shard_count",
-}
-
 const history = await client.getBotHistorical(
   "583807014896140293",
   HistoricalTimeFrame.THIRTY_DAYS,
@@ -114,9 +107,33 @@ const rankings = await client.getRankings({
 });
 ```
 
+#### `compareBots(ids: string[]): Promise<{ data: any[] }>` 
+
+Fetches the latest statistics for multiple bots and returns their data for comparison.
+
+```typescript
+const compareResponse = await client.compareBots([
+  "432610292342587392",
+  "646937666251915264",
+]);
+```
+
+#### `compareBotsHistorical(request: CompareBotsHistoricalRequest): Promise<{ data: Record<string, any[]> }>` 
+
+Fetches historical comparison data for multiple bots based on the provided time frame and data type.
+
+```typescript
+const historicalCompareResponse = await client.compareBotsHistorical({
+  ids: ["432610292342587392", "646937666251915264"],
+  timeFrame: HistoricalTimeFrame.SEVEN_DAYS,
+  type: HistoricalDataType.MONTHLY_VOTES,
+});
+```
+
 ### Types
 
 ```typescript
+// Bot data and statistics
 interface BotData {
   id: string;
   name: string;
@@ -126,14 +143,26 @@ interface BotData {
   // ... and more
 }
 
+// Recent data statistics
 interface RecentDataResponse {
   hourlyData: RecentData[];
   dailyData: RecentData[];
 }
 
+// Rankings response
 interface RankingsResponse {
   totalBotCount: number;
   data: RankingsData[];
+}
+
+// Compare response
+interface CompareBotsResponse {
+  data: any[];
+}
+
+// Historical compare response
+interface CompareBotsHistoricalResponse {
+  data: Record<string, any[]>;
 }
 ```
 
@@ -197,6 +226,25 @@ console.log("Top 10 Bots by Monthly Votes:");
 top10.data.forEach((bot, i) => {
   console.log(`${i + 1}. ${bot.name}: ${bot.monthly_votes} votes`);
 });
+```
+
+### Comparing Multiple Bots
+
+```typescript
+// Compare basic data for two bots
+const compareBots = await client.compareBots([
+  "432610292342587392",
+  "646937666251915264",
+]);
+console.log("Comparative Bot Data:", compareBots.data);
+
+// Compare historical monthly votes data over the last 7 days
+const compareHistorical = await client.compareBotsHistorical({
+  ids: ["432610292342587392", "646937666251915264"],
+  timeFrame: HistoricalTimeFrame.SEVEN_DAYS,
+  type: HistoricalDataType.MONTHLY_VOTES,
+});
+console.log("Comparative Historical Data:", compareHistorical.data);
 ```
 
 ## License

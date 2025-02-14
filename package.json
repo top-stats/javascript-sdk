@@ -16,7 +16,7 @@
     "test:ui": "playwright test --ui",
     "example": "ts-node example/index.ts",
     "prepublishOnly": "npm run clean && npm run build",
-    "lint": "tsc --noEmit",
+    "lint": "eslint \"lib/**/*.ts\" \"example/**/*.ts\" \"tests/**/*.ts\"",
     "format": "prettier --write \"lib/**/*.ts\" \"example/**/*.ts\" \"tests/**/*.ts\""
   },
   "files": [
@@ -46,11 +46,17 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@playwright/test": "^1.48.2",
     "@types/node": "^20.11.0",
     "dotenv": "^16.4.5",
-    "prettier": "^3.2.5",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.15.0",
+    "prettier": "^3.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.24.0"
   }
 }

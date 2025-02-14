@@ -15,7 +15,7 @@ export interface RateLimitedResponse {
 export class TopStatsError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "TopStatsError";
+    this.name = 'TopStatsError';
     Object.setPrototypeOf(this, TopStatsError.prototype);
   }
 }
@@ -23,10 +23,10 @@ export class TopStatsError extends Error {
 export class RateLimitError extends TopStatsError {
   constructor(
     message: string,
-    public expiresIn: number,
+    public expiresIn: number
   ) {
     super(message);
-    this.name = "RateLimitError";
+    this.name = 'RateLimitError';
     Object.setPrototypeOf(this, RateLimitError.prototype);
   }
 }

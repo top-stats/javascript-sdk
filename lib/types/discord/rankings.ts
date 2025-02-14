@@ -13,12 +13,12 @@ export function isValidRankingsLimit(value: number): value is RankingsLimit {
 export const DEFAULT_RANKINGS_LIMIT = 100 as RankingsLimit;
 
 export type RankingsSortBy =
-  | "monthly_votes_rank"
-  | "total_votes_rank"
-  | "server_count_rank"
-  | "shard_count_rank";
+  | 'monthly_votes_rank'
+  | 'total_votes_rank'
+  | 'server_count_rank'
+  | 'shard_count_rank';
 
-export type RankingsSortMethod = "asc" | "desc";
+export type RankingsSortMethod = 'asc' | 'desc';
 
 export interface RankingsRequest {
   limit?: RankingsLimit;

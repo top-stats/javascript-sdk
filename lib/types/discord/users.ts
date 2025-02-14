@@ -1,4 +1,4 @@
-import { BotData } from "./bots";
+import { BotData } from './bots';
 
 export interface GetUsersBotsRequest {
   id: string;
