@@ -1,12 +1,47 @@
-node_modules/
-src/
+# Source
+/lib/
+/example/
+/tests/
+
+# Config files
+.prettierrc
+.eslintrc*
+.editorconfig
+tsconfig.json
+playwright.config.ts
+*.config.js
+
+# Git
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Tests
+/test/
+/coverage/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/
+
+# CI
+.travis.yml
+.circleci/
+.github/
+
+# Logs
 logs/
 *.log
 
-!dist/
-.eslintrc.json
-.gitattributes
-.gitignore
-.github/
-test/
-tsconfig.json
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.DS_Store
+
+# Misc
+.env*
+.npmrc
+.yarnrc
+.yarn/

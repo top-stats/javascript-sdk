@@ -1,34 +1,62 @@
 {
-  "name": "dblstatistics.js",
-  "version": "2.0.2",
-  "description": "Official node module for interacting with the dblstats.com API",
-  "main": "./dist/src/DblStatsClient.js",
+  "name": "topstats",
+  "version": "1.0.0",
+  "description": "Official Node.js client for the topstats.gg API",
+  "author": "David @dvhsh",
+  "license": "MIT",
+  "main": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "build": "rm -r ./dist && tsc",
-    "prepublishOnly": "npm run build"
+    "build": "rm -rf ./dist && tsc",
+    "clean": "rm -rf ./dist",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "example": "ts-node example/index.ts",
+    "prepublishOnly": "npm run clean && npm run build",
+    "lint": "eslint \"lib/**/*.ts\" \"example/**/*.ts\" \"tests/**/*.ts\"",
+    "format": "prettier --write \"lib/**/*.ts\" \"example/**/*.ts\" \"tests/**/*.ts\""
   },
-  "devDependencies": {
-    "@types/node-fetch": "^2.5.7",
-    "@types/node": "^14.14.10",
-    "@types/query-string": "^6.3.0"
-  },
-  "author": "JPBBerry",
-  "license": "ISC",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dbl-marcorennmaus-de/dblstatistics.js.git"
+    "url": "git+https://github.com/top-stats/topstats.git"
   },
   "keywords": [
-    "dblstats",
-    "top.gg",
-    "dbl"
+    "topstats",
+    "discord",
+    "bots",
+    "api",
+    "statistics",
+    "rankings",
+    "discord-bots"
   ],
-  "dependencies": {
-    "node-fetch": "^2.6.1"
-  },
   "bugs": {
-    "url": "https://github.com/dbl-marcorennmaus-de/dblstatistics.js/issues"
+    "url": "https://github.com/top-stats/topstats/issues"
   },
-  "homepage": "https://github.com/dbl-marcorennmaus-de/dblstatistics.js#readme",
-  "types": "./dist/src/DblStatsClient.d.ts"
+  "homepage": "https://github.com/top-stats/topstats#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@playwright/test": "^1.48.2",
+    "@types/node": "^20.11.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^15.15.0",
+    "prettier": "^3.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.24.0"
+  }
 }
