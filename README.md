@@ -5,7 +5,7 @@ Community maintained Node.js client for the [topstats.gg](https://topstats.gg) A
 ## Installation
 
 ```bash
-npm install topstats
+npm install @topstats/sdk
 ```
 
 ## Quick Start
