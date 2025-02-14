@@ -11,7 +11,7 @@ npm install topstats
 ## Quick Start
 
 ```typescript
-import { Client, HistoricalDataType, HistoricalTimeFrame } from "topstats";
+import { Client, HistoricalDataType, HistoricalTimeFrame } from "@topstats/sdk";
 
 // Initialize client with your API token
 const client = new Client("YOUR_TOKEN");
