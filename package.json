@@ -1,6 +1,6 @@
 {
   "name": "@topstats/sdk",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Official Node.js client for the topstats.gg API",
   "author": "David @dvhsh",
   "license": "MIT",
@@ -26,7 +26,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/top-stats/topstats.git"
+    "url": "git+https://github.com/top-stats/javascript-sdk.git"
   },
   "keywords": [
     "topstats",
@@ -38,9 +38,9 @@
     "discord-bots"
   ],
   "bugs": {
-    "url": "https://github.com/top-stats/topstats/issues"
+    "url": "https://github.com/top-stats/javascript-sdk/issues"
   },
-  "homepage": "https://github.com/top-stats/topstats#readme",
+  "homepage": "https://github.com/top-stats/javascript-sdk#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
