@@ -1,6 +1,6 @@
 {
   "name": "@topstats/sdk",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Official Node.js client for the topstats.gg API",
   "author": "David @dvhsh",
   "license": "MIT",
