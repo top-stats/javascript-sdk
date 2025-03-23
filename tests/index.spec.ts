@@ -101,7 +101,7 @@ test.describe('TopStats API Client', () => {
         'time',
         'monthly_votes',
         'server_count',
-        'shard_count',
+        'review_count',
         'total_votes',
         'monthly_votes_change',
         'server_count_change',
@@ -210,12 +210,8 @@ test.describe('TopStats API Client', () => {
           };
           expect(dataPoint).toHaveProperty('time');
           expect(dataPoint).toHaveProperty('id', id);
-          expect(dataPoint).toHaveProperty(
-            'type',
-            HistoricalDataType.MONTHLY_VOTES
-          );
-          expect(dataPoint).toHaveProperty('value');
-          expect(typeof dataPoint.value).toBe('number');
+          expect(dataPoint).toHaveProperty(HistoricalDataType.MONTHLY_VOTES);
+          expect(typeof dataPoint[HistoricalDataType.MONTHLY_VOTES]).toBe('number');
         }
       }
     });
@@ -244,7 +240,7 @@ test.describe('TopStats API Client', () => {
         } catch (error) {
           // Check for the actual rate limit message
           expect(error.message).toBe(
-            'You can only make 60 requests per 1 minute. Try again soon.'
+            'You are being rate limited limit, Try again soon.'
           );
           return; // Test passes if we hit rate limit
         }

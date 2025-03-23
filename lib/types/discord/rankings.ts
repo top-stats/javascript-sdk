@@ -15,8 +15,7 @@ export const DEFAULT_RANKINGS_LIMIT = 100 as RankingsLimit;
 export type RankingsSortBy =
   | 'monthly_votes_rank'
   | 'total_votes_rank'
-  | 'server_count_rank'
-  | 'shard_count_rank';
+  | 'server_count_rank';
 
 export type RankingsSortMethod = 'asc' | 'desc';
 
@@ -35,12 +34,9 @@ export interface RankingsData {
   server_count_rank: number;
   total_votes: number;
   total_votes_rank: number;
-  shard_count: number;
-  shard_count_rank: number;
   monthly_votes_rank_change: number;
   server_count_rank_change: number;
   total_votes_rank_change: number;
-  shard_count_rank_change: number;
 }
 
 export interface RankingsResponse {

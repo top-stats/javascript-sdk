@@ -31,15 +31,13 @@ export interface BotData {
   /** Total votes received */
   total_votes: number;
   /** Current shard count */
-  shard_count: number;
+  review_count: number;
   /** Current rank by monthly votes */
   monthly_votes_rank: number;
   /** Current rank by server count */
   server_count_rank: number;
   /** Current rank by total votes */
   total_votes_rank: number;
-  /** Current rank by shard count */
-  shard_count_rank: number;
   /** ISO timestamp of last update */
   timestamp: string;
   /** Unix timestamp of last update */
@@ -60,7 +58,7 @@ export enum HistoricalDataType {
   MONTHLY_VOTES = 'monthly_votes',
   TOTAL_VOTES = 'total_votes',
   SERVER_COUNT = 'server_count',
-  SHARD_COUNT = 'shard_count',
+  REVIEW_COUNT = 'review_count',
 }
 
 /**
@@ -118,12 +116,12 @@ export interface RecentData {
   time: string;
   monthly_votes: number;
   server_count: number;
-  shard_count: number;
+  review_count: number;
   total_votes: number;
   monthly_votes_change: number;
   monthly_votes_change_perc: number;
   server_count_change: number;
-  shard_count_change: number;
+  review_count_change: number;
   total_votes_change: number;
 }
 
