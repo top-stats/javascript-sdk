@@ -30,7 +30,7 @@ export interface BotData {
   server_count: number;
   /** Total votes received */
   total_votes: number;
-  /** Current shard count */
+  /** Current review count */
   review_count: number;
   /** Current rank by monthly votes */
   monthly_votes_rank: number;
