@@ -4,8 +4,8 @@
   "description": "Official Node.js client for the topstats.gg API",
   "author": "David @dvhsh",
   "license": "MIT",
-  "main": "./dist/lib/index.js",
-  "types": "./dist/lib/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": ">=16.0.0"
   },
